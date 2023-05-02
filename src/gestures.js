@@ -1,4 +1,4 @@
-const { GestureDescription, Finger, FingerCurl } = window.fp;
+const { GestureDescription, Finger, FingerCurl, FingerDirection} = window.fp;
   
 
 
@@ -7,6 +7,8 @@ const PaperGesture = new GestureDescription('maoAberta'); // 🖐
 const ScissorsGesture = new GestureDescription('scissors'); // ✌️
 const EuAmoVoce = new GestureDescription('amoVoce'); // ✌️
 const MeLiga = new GestureDescription('meLiga');
+const Arma = new GestureDescription('arma');
+
 // Rock
 // -----------------------------------------------------------------------------
   
@@ -57,7 +59,7 @@ ScissorsGesture.addCurl(Finger.Pinky, FingerCurl.HalfCurl, 0.9);
 
 //dedão um pouco esticado
 EuAmoVoce.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1);
-EuAmoVoce.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 0.6);
+
 
 //dedo indicador totalmente esticado
 EuAmoVoce.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
@@ -99,9 +101,32 @@ MeLiga.addCurl(Finger.Pinky, FingerCurl.NoCurl, 1.0);
 MeLiga.addCurl(Finger.Pinky, FingerCurl.HalfCurl, 0.9);
 
 
+// arma
+//------------------------------------------------------------------------------
+
+//dedão um pouco esticado
+Arma.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1);
+
+//dedo indicador totalmente recuado
+Arma.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
+Arma.addCurl(Finger.Index, FingerCurl.HalfCurl, 0.9);
+
+//dedo médio recuado, porém não totalmente
+Arma.addCurl(Finger.Middle, FingerCurl.FullCurl, 1);
+Arma.addCurl(Finger.Middle, FingerCurl.HalfCurl, 0.9);
+
+//n sei o nome desse dedo, mas é o mesmo caso do anterior
+Arma.addCurl(Finger.Ring, FingerCurl.FullCurl, 1.0);
+Arma.addCurl(Finger.Ring, FingerCurl.HalfCurl, 0.9);
+
+//dedo mindinho totalmente esticado
+Arma.addCurl(Finger.Pinky, FingerCurl.FullCurl, 1.0);
+Arma.addCurl(Finger.Pinky, FingerCurl.HalfCurl, 0.9);
+
+
 
 const gestures = [
-    RockGesture, PaperGesture, ScissorsGesture, EuAmoVoce, MeLiga
+    RockGesture, PaperGesture, ScissorsGesture, EuAmoVoce, Arma
 ]
 
 export {

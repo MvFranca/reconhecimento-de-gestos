@@ -20,7 +20,8 @@
       rock: 'A',
       maoAberta: 'Pare',
       amoVoce:  'Eu amo você',
-      meLiga: 'Me liga'
+      meLiga: 'Me liga',
+      arma: 'Arma'
     }
 
     //reconhece duas mãos
@@ -57,7 +58,19 @@
       // load handpose model
       const detector = await createDetector()
       console.log("mediaPose model loaded")
+      const pair = new Set()
+      function checkGestureCombination(chosenHand, poseData){
+        const addToPairIfCorrect = (chosenHand) => {
+          const containsHand = poseData.some(finger => dont[chosenHand].includes(finger[2]))
+          if(!containsHand) return;
+          pair.add(chosenHand)
+        }
 
+        addToPairIfCorrect(chosenHand)
+        if(pair.size !== 2) return
+        resultLayer.left.innerText = resultLayer.right.innerText = gestureStrings.dont
+        pair.clear()
+      }
       // main estimation loop
       const estimateHands = async () => {
 
@@ -73,6 +86,7 @@
           flipHorizontal: true
         })
 
+        console.log(hands)
         
         for (const hand of hands) {
           for (const keypoint of hand.keypoints) {
@@ -83,14 +97,18 @@
           const keypoints3D1 = hand.keypoints3D.map(keypoint => [keypoint.x, keypoint.y, keypoint.z])
           const est = GE.estimate(keypoints3D1, 9)
           if (est.gestures.length > 0) {
-
-            // find gesture with highest match score
             let result = est.gestures.reduce((p, c) => {
               return (p.score > c.score) ? p : c
             })
+            const found = gestureStrings[result.name]
+           
             const chosenHand = hand.handedness.toLowerCase()
-            resultLayer[chosenHand].innerText = gestureStrings[result.name]
             updateDebugInfo(est.poseData, chosenHand)
+            if(found !== gestureStrings.dont) {
+            resultLayer[chosenHand].innerText =  found
+            continue
+            } 
+            checkGestureCombination(chosenHand, poseData)
           }
 
         }
